@@ -6,7 +6,8 @@ if (typeof process !== 'undefined' && typeof define === 'undefined') {
 		packages: [
 			{ name: 'dojo-ts', location: __dirname + '/dojo' },
 			{ name: 'teststack', location: __dirname },
-			{ name: 'chai', location: __dirname + '/chai', main: 'chai' }
+			{ name: 'chai', location: __dirname + '/chai', main: 'chai' },
+			{ name: 'benchmark', location: __dirname + '/benchmark', main: 'benchmark' }
 		]
 	}, [ 'teststack/runner' ]);
 }
