@@ -1,20 +1,25 @@
 /*jshint node:true */
 if (typeof process !== 'undefined' && typeof define === 'undefined') {
-	var req = require('./dojo/dojo');
-	req({
-		baseUrl: __dirname + '/../',
-		packages: [
-			{ name: 'dojo-ts', location: __dirname + '/dojo' },
-			{ name: 'teststack', location: __dirname },
-			{ name: 'chai', location: __dirname + '/chai', main: 'chai' }
-		]
-	}, [ 'teststack/runner' ]);
+	(function () {
+		var req = require('./dojo/dojo'),
+			pathUtils = require('path');
+
+		req({
+			baseUrl: pathUtils.resolve(__dirname, '..'),
+			packages: [
+				{ name: 'dojo-ts', location: pathUtils.resolve(__dirname, 'dojo') },
+				{ name: 'teststack', location: __dirname },
+				{ name: 'chai', location: pathUtils.resolve(__dirname, 'chai'), main: 'chai' }
+			]
+		}, [ 'teststack/runner' ]);
+	})();
 }
 else {
 	define([
 		'require',
 		'./main',
 		'./lib/createProxy',
+		'dojo-ts/node!path',
 		'dojo-ts/node!istanbul/lib/instrumenter',
 		'dojo-ts/node!sauce-connect-launcher',
 		'./lib/args',
@@ -27,7 +32,7 @@ else {
 		'dojo-ts/Deferred',
 		'dojo-ts/topic',
 		'./lib/EnvironmentType'
-	], function (require, main, createProxy, Instrumenter, startConnect, args, util, Suite, ClientSuite, Test, wd, ioQuery, Deferred, topic, EnvironmentType) {
+	], function (require, main, createProxy, pathUtils, Instrumenter, startConnect, args, util, Suite, ClientSuite, Test, wd, ioQuery, Deferred, topic, EnvironmentType) {
 		if (!args.config) {
 			throw new Error('Required option "config" not specified');
 		}
@@ -52,7 +57,7 @@ else {
 
 				// auto-wrap breaks code
 				noAutoWrap: true
-			}), '..');
+			}), global.require.baseUrl);
 
 			// Running just the proxy and aborting is useful mostly for debugging, but also lets you get code coverage
 			// reporting on the client if you want
@@ -77,7 +82,7 @@ else {
 
 			// TODO: Global require is needed because context require does not currently have config mechanics built
 			// in.
-			config.packages && this.require({ packages: config.packages });
+			this.require(config.loader);
 
 			var startup;
 			if (config.useSauceConnect) {
@@ -98,7 +103,12 @@ else {
 			}
 
 			main.maxConcurrency = config.maxConcurrency || Infinity;
-			util.flattenEnvironments(config.environments).forEach(function (environmentType) {
+
+			if (process.env.TRAVIS_COMMIT) {
+				config.capabilities.build = process.env.TRAVIS_COMMIT;
+			}
+
+			util.flattenEnvironments(config.capabilities, config.environments).forEach(function (environmentType) {
 				var suite = new Suite({
 					name: 'main',
 					remote: wd.remote(config.webdriver, environmentType),

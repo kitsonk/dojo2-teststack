@@ -16,6 +16,13 @@ This repository is an experimental repository for the next major version of the 
 using it as long as you can put up with some API churn until it reaches alpha.
 
 
+## Do you hate kittens and love old IE?
+
+If you need to support IE 6–8, there is also a
+[version of teststack for legacy browsers](https://github.com/csnover/dojo2-teststack/tree/geezer "geezer branch"), but
+please, for the sake of the kittens, stop supporting those browsers already.
+
+
 ## Features
 
 * 100% [AMD](https://github.com/amdjs/amdjs-api/wiki/AMD), 100% Promises/A-based API
@@ -47,15 +54,18 @@ First:
 
 Then, for a stand-alone browser client:
 
-1. Navigate to `http://path/to/dojo2-teststack/client.html?suites=mid/of/testsuite&suites=mid/of/othersuite`
+1. Navigate to `http://path/to/dojo2-teststack/client.html?config=mid/of/teststack/config`
 1. View console
 1. Fix bugs
 
 Or, for a stand-alone Node.js client:
 
-1. Run `node client.js suites=mid/of/testsuite suites=mid/of/othersuite`
+1. Run `node client.js config=mid/of/teststack/config`
 1. View console
 1. Fix bugs
+
+For both clients, you can specify a `reporter` and one or more `suites` options to override the options in the
+configuration file.
 
 Or, as an amazing fully-featured automated test runner:
 
