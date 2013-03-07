@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/csnover/dojo2-teststack.png?branch=master)](https://travis-ci.org/csnover/dojo2-teststack)
+
 # The Dojo Test Stack
 
 The Dojo Test Stack is a collection of JavaScript modules designed to work together to help you write consistent,
@@ -51,6 +53,7 @@ First:
 
 1. `git clone --recursive https://github.com/csnover/dojo2-teststack.git` as a sibling directory of the package you
    want to test
+2. `npm install --production` from the `dojo2-teststack` directory
 
 Then, for a stand-alone browser client:
 
