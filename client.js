@@ -10,7 +10,7 @@ if (typeof process !== 'undefined' && typeof define === 'undefined') {
 				{ name: 'dojo-ts', location: pathUtils.resolve(__dirname, 'dojo') },
 				{ name: 'teststack', location: __dirname },
 				{ name: 'chai', location: pathUtils.resolve(__dirname, 'chai'), main: 'chai' },
-				{ name: 'benchmark', location: pathUtils.resolve(__dirname, 'chai'), main: 'benchmark' }
+				{ name: 'benchmark', location: pathUtils.resolve(__dirname, 'benchmark'), main: 'benchmark' }
 			]
 		}, [ 'teststack/client' ]);
 	})();
